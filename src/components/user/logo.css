@@ -1,0 +1,14 @@
+img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+}
+
+.m3Logo {
+  width: 65px;
+  margin: 30px 30px;
+  position: absolute;
+  z-index: 100;
+}
