@@ -4,6 +4,6 @@ footer {
   left: 0;
   right: 0;
   height: 15px;
-  z-index: 35;
+  z-index: 10000;
   background: #e30613;
 }

@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAppContext } from "../../middleware/context-provider";
 import Footer from "../Footer";
@@ -6,13 +6,27 @@ import { Logo } from "../user/logo";
 import { LogOutButton } from "../user/logout-button";
 
 export const MapViewer: FC = () => {
+  const containerRef = useRef(null);
+  const [isCreating, setIsCreating] = useState(false);
+
   const [state, dispatch] = useAppContext();
-  const canvasRef = useRef(null);
+  const { user } = state;
+
+  const onToggleCreate = () => {
+    setIsCreating(!isCreating);
+  };
+
+  const onCreate = () => {
+    if (isCreating) {
+      dispatch({ type: "ADD_BUILDING", payload: user });
+      setIsCreating(!isCreating);
+    }
+  };
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (canvas && state.user) {
-      dispatch({ type: "START_MAP", payload: canvas });
+    const container = containerRef.current;
+    if (container && user) {
+      dispatch({ type: "START_MAP", payload: { container, user } });
     }
 
     return () => {
@@ -20,7 +34,7 @@ export const MapViewer: FC = () => {
     };
   }, []);
 
-  if (!state.user) {
+  if (!user) {
     return <Navigate to="/login" />;
   }
 
@@ -28,7 +42,15 @@ export const MapViewer: FC = () => {
     <>
       <Logo />
       <LogOutButton />
-      <div className="full-screen" ref={canvasRef} />
+      <button onClick={onToggleCreate}>Neues Gebäude</button>
+
+      {isCreating && (
+        <div className="overlay">
+          <p>Klicke rechts, um ein neues Gebäude zu erstellen, oder</p>
+          <button onClick={onToggleCreate}>abbrechen</button>
+        </div>
+      )}
+      <div className="full-screen" ref={containerRef} />
       <Footer />
     </>
   );

@@ -6,5 +6,5 @@ export const LogOutButton: FC = () => {
   const onLogoutClick = () => {
     dispatch({ type: "LOGOUT" });
   };
-  return <button onClick={onLogoutClick}>Log out</button>;
+  return <button onClick={onLogoutClick}>Abmelden</button>;
 };

@@ -10,5 +10,5 @@ img {
   width: 65px;
   margin: 30px 30px;
   position: absolute;
-  z-index: 100;
+  z-index: 10000;
 }
