@@ -1,6 +1,13 @@
+.button-container {
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  width: 10rem;
+}
+
 .overlay {
   position: fixed;
-  width: 100 vw;
+  width: 100vw;
   height: 100vh;
   background: rgba(255, 255, 255, 0.6);
   pointer-events: none;
@@ -10,6 +17,6 @@
   z-index: 999;
 }
 
-.overly > Button {
+.overlay > Button {
   pointer-events: all;
 }

@@ -24,8 +24,18 @@ button {
   cursor: pointer;
 }
 
+.hidden {
+  visibility: collapse;
+}
+
 .full-screen {
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
-  position: "absolute";
+  position: absolute;
+}
+
+.full-width {
+  width: 100%;
 }

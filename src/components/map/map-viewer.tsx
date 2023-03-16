@@ -4,6 +4,7 @@ import { useAppContext } from "../../middleware/context-provider";
 import Footer from "../Footer";
 import { Logo } from "../user/logo";
 import { LogOutButton } from "../user/logout-button";
+import "./map-viewer.css";
 
 export const MapViewer: FC = () => {
   const containerRef = useRef(null);
@@ -41,16 +42,22 @@ export const MapViewer: FC = () => {
   return (
     <>
       <Logo />
-      <LogOutButton />
-      <button onClick={onToggleCreate}>Neues Gebäude</button>
-
+      <div
+        onContextMenu={onCreate}
+        className="full-screen"
+        ref={containerRef}
+      />
       {isCreating && (
         <div className="overlay">
           <p>Klicke rechts, um ein neues Gebäude zu erstellen, oder</p>
           <button onClick={onToggleCreate}>abbrechen</button>
         </div>
       )}
-      <div className="full-screen" ref={containerRef} />
+      <div className="button-container">
+        <button onClick={onToggleCreate}>Neues Gebäude</button>
+        <LogOutButton />
+      </div>
+
       <Footer />
     </>
   );
