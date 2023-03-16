@@ -1,3 +1,4 @@
+import { User } from "firebase/auth";
 import { MapScene } from "./map-scene";
 
 export const mapHandler = {
@@ -15,6 +16,12 @@ export const mapHandler = {
       console.log("Map removed!");
       this.viewer.dispose();
       this.viewer = null;
+    }
+  },
+
+  addBuilding(user: User) {
+    if (this.viewer) {
+      this.viewer.addBuilding(user);
     }
   },
 };
