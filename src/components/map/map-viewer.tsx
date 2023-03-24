@@ -7,10 +7,10 @@ import { LogOutButton } from "../user/logout-button";
 import "./map-viewer.css";
 
 export const MapViewer: FC = () => {
-  const containerRef = useRef(null);
-  const [isCreating, setIsCreating] = useState(false);
-
   const [state, dispatch] = useAppContext();
+  const containerRef = useRef(null);
+  const thumbnailRef = useRef(null);
+  const [isCreating, setIsCreating] = useState(false);
   const { user } = state;
 
   const onToggleCreate = () => {
@@ -27,7 +27,8 @@ export const MapViewer: FC = () => {
   useEffect(() => {
     const container = containerRef.current;
     if (container && user) {
-      dispatch({ type: "START_MAP", payload: { container, user } });
+      const thumbnail = thumbnailRef.current;
+      dispatch({ type: "START_MAP", payload: { container, user, thumbnail } });
     }
 
     return () => {
