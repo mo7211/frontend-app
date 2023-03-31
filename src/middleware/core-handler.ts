@@ -2,23 +2,29 @@ import { mapHandler } from "../core/map/map-handler";
 import { authHandler } from "../core/auth-handler";
 import { Action } from "./actions";
 import { Events } from "./event-handler";
+import { databaseHandler } from "../core/db/db-handler";
 
 export const executeCore = (action: Action, events: Events) => {
   if (action.type === "LOGIN") {
-    return authHandler.login();
+    authHandler.login();
   }
   if (action.type === "LOGOUT") {
-    return authHandler.logout();
+    authHandler.logout();
   }
   if (action.type === "START_MAP") {
     const { container, user } = action.payload;
-    return mapHandler.start(container, user, events);
+    mapHandler.start(container, user, events);
   }
   if (action.type === "REMOVE_MAP") {
-    return mapHandler.remove();
+    mapHandler.remove();
   }
   if (action.type === "ADD_BUILDING") {
-    return mapHandler.addBuilding(action.payload);
+    mapHandler.addBuilding(action.payload);
   }
-
+  if (action.type === "DELETE_BUILDING") {
+    databaseHandler.deleteBuilding(action.payload, events);
+  }
+  if (action.type === "UPDATE_BUILDING") {
+    databaseHandler.updateBuilding(action.payload);
+  }
 };
