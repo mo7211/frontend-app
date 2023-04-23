@@ -49,14 +49,14 @@ export const BuildingViewer: FC = () => {
         width={width}
         open={sideOpen}
         onClose={() => toggleDrawer(false)}
-        onToggleMenu={toggleFrontMenu}
+        onToggleMenu={() => toggleFrontMenu(true)}
       />
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
 
         <BuildingFrontMenu
-          onToggleMenu={toggleFrontMenu}
+          onToggleMenu={() => toggleFrontMenu(false)}
           open={frontOpen}
           mode="BuildingInfo"
         />
