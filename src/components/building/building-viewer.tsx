@@ -1,25 +1,69 @@
-import { FC } from "react";
-import { Navigate } from "react-router-dom";
+import { FC, useState } from "react";
+import Box from "@mui/material/Box";
+import { CssBaseline } from "@mui/material";
+import { BuildingDrawer } from "./building-drawer";
+import { BuildingTopbar } from "./building-topbar";
+import { getDrawerHeader } from "./mui-utils";
 import { useAppContext } from "../../middleware/context-provider";
+import { Navigate } from "react-router-dom";
+import { BuildingFrontMenu } from "./front-menu/building-front-menu";
 import Footer from "../Footer";
 
 export const BuildingViewer: FC = () => {
-  const [state, dispatch] = useAppContext();
-  const { building } = state;
+  const [sideOpen, setSideOpen] = useState(false);
+  const [frontOpen, setFrontOpen] = useState(false);
 
-  const onCloseBuilding = () => {
-    dispatch({ type: "CLOSE_BUILDING" });
-  };
+  const [width] = useState(240);
+
+  const [{ building, user }] = useAppContext();
 
   if (!building) {
-    return <Navigate to={"/map"} />;
+    return <Navigate to="/map" />;
   }
 
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+
+  const toggleFrontMenu = (active = !frontOpen) => {
+    setFrontOpen(active);
+  };
+
+  const toggleDrawer = (active: boolean) => {
+    setSideOpen(active);
+  };
+
+  const DrawerHeader = getDrawerHeader();
+
   return (
-    <>
-      <h1>Hello building viewer!</h1>
-      <button onClick={onCloseBuilding}>Modell schließen</button>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+
+      <BuildingTopbar
+        width={width}
+        open={sideOpen}
+        onOpen={() => toggleDrawer(true)}
+      />
+
+      <BuildingDrawer
+        width={width}
+        open={sideOpen}
+        onClose={() => toggleDrawer(false)}
+        onToggleMenu={toggleFrontMenu}
+      />
+
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <DrawerHeader />
+
+        <BuildingFrontMenu
+          onToggleMenu={toggleFrontMenu}
+          open={frontOpen}
+          mode="BuildingInfo"
+        />
+
+        <h1>Hello building viewer!</h1>
+      </Box>
       <Footer />
-    </>
+    </Box>
   );
 };
