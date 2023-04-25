@@ -8,12 +8,13 @@ import { useAppContext } from "../../middleware/context-provider";
 import { Navigate } from "react-router-dom";
 import { BuildingFrontMenu } from "./front-menu/building-front-menu";
 import Footer from "../Footer";
+import { FrontMenuMode } from "./types";
 
 export const BuildingViewer: FC = () => {
+  const [width] = useState(240);
   const [sideOpen, setSideOpen] = useState(false);
   const [frontOpen, setFrontOpen] = useState(false);
-
-  const [width] = useState(240);
+  const [frontMode, setFrontMode] = useState<FrontMenuMode>("BuildingInfo");
 
   const [{ building, user }] = useAppContext();
 
@@ -25,7 +26,10 @@ export const BuildingViewer: FC = () => {
     return <Navigate to="/login" />;
   }
 
-  const toggleFrontMenu = (active = !frontOpen) => {
+  const toggleFrontMenu = (active: boolean, mode?: FrontMenuMode) => {
+    if (mode) {
+      setFrontMode(mode);
+    }
     setFrontOpen(active);
   };
 
@@ -49,7 +53,7 @@ export const BuildingViewer: FC = () => {
         width={width}
         open={sideOpen}
         onClose={() => toggleDrawer(false)}
-        onToggleMenu={() => toggleFrontMenu(true)}
+        onToggleMenu={toggleFrontMenu}
       />
 
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
@@ -58,7 +62,7 @@ export const BuildingViewer: FC = () => {
         <BuildingFrontMenu
           onToggleMenu={() => toggleFrontMenu(false)}
           open={frontOpen}
-          mode="BuildingInfo"
+          mode={frontMode}
         />
 
         <h1>Hello building viewer!</h1>

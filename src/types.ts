@@ -14,6 +14,12 @@ export interface Building {
   lng: number;
   userID: string;
   name: string;
+  models: Model[];
+}
+
+export interface Model {
+  name: string;
+  id: string;
 }
 
 export interface LngLat {

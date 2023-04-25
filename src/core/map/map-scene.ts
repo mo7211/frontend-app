@@ -2,7 +2,7 @@ import * as THREE from "three";
 import * as OBC from "openbim-components";
 import * as MAPBOX from "mapbox-gl";
 import { CSS2DObject } from "three/examples/jsm/renderers/CSS2DRenderer";
-import { GisParameters, Building, LngLat } from "../types";
+import { GisParameters, Building, LngLat } from "../../types";
 import { MAPBOX_KEY } from "../../config";
 import { User } from "firebase/auth";
 import { MapDatabase } from "./map-database";
@@ -47,7 +47,7 @@ export class MapScene {
   async addBuilding(user: User) {
     const { lat, lng } = this.clickedCoordinates;
     const userID = user.uid;
-    const building = { userID, lat, lng, uid: "", name: "" };
+    const building = { userID, lat, lng, uid: "", name: "", models: [] };
     building.uid = await this.database.add(building);
     this.addToScene([building]);
   }

@@ -8,19 +8,20 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { Building } from "../types";
+import { Building } from "../../types";
 
 export class MapDatabase {
   private readonly buildings = "buildings";
 
   async add(building: Building) {
     const dbInstance = getFirestore(getApp());
-    const { lat, lng, userID, name } = building;
+    const { lat, lng, userID, name, models } = building;
     const result = await addDoc(collection(dbInstance, this.buildings), {
       lat,
       lng,
       userID,
       name,
+      models,
     });
     return result.id;
   }

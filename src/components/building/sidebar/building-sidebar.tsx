@@ -10,12 +10,11 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { getSidebarTools } from "./sidebar-tools";
 import { useAppContext } from "../../../middleware/context-provider";
-
-const items = ["Models", "Floorplans", "Issues", "Map", "Log out"];
+import { FrontMenuMode } from "../types";
 
 export const BuildingSidebar: FC<{
   open: boolean;
-  onToggleMenu: () => void;
+  onToggleMenu: (active: boolean, mode?: FrontMenuMode) => void;
 }> = (props) => {
   const { open, onToggleMenu } = props;
   const [state, dispatch] = useAppContext();
@@ -24,8 +23,13 @@ export const BuildingSidebar: FC<{
 
   return (
     <List>
-      {items.map((text, index) => (
-        <ListItem key={text} disablePadding sx={{ display: "block" }}>
+      {tools.map((tool) => (
+        <ListItem
+          onClick={tool.action}
+          key={tool.name}
+          disablePadding
+          sx={{ display: "block" }}
+        >
           <ListItemButton
             sx={{
               minHeight: 48,
@@ -40,9 +44,9 @@ export const BuildingSidebar: FC<{
                 justifyContent: "center",
               }}
             >
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              {tool.icon}
             </ListItemIcon>
-            <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+            <ListItemText primary={tool.name} sx={{ opacity: open ? 1 : 0 }} />
           </ListItemButton>
         </ListItem>
       ))}
