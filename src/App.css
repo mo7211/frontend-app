@@ -9,7 +9,8 @@
 
 button:hover,
 a:hover {
-  color: #e30613;
+  color: rgba(0, 67, 255, 1);
+  /* color: #e30613; */
 }
 
 button {
