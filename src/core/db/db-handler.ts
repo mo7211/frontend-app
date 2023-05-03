@@ -1,3 +1,4 @@
+import { buildingHandler } from "./../building/building-handler";
 import { Model, Building } from "./../../types";
 import { Events } from "./../../middleware/event-handler";
 import {
@@ -23,9 +24,18 @@ export const databaseHandler = {
   },
 
   deleteBuilding: async (building: Building, events: Events) => {
-    const id = building.uid;
-    const dbInstance = getFirestore(getApp());
-    await deleteDoc(doc(dbInstance, "buildings", id));
+    const app = getApp();
+    const dbInstance = getFirestore();
+    await deleteDoc(doc(dbInstance, "buildings", building.uid));
+    const ids: string[] = [];
+
+    const storageInstance = getStorage(app);
+    for (const model of building.models) {
+      const fileRef = ref(storageInstance, model.id);
+      await deleteObject(fileRef);
+      ids.push(model.id);
+    }
+    await buildingHandler.deleteModels(ids);
     events.trigger({ type: "CLOSE_BUILDING" });
   },
 
@@ -46,6 +56,7 @@ export const databaseHandler = {
     const storageInstance = getStorage(appInstance);
     const fileRef = ref(storageInstance, model.id);
     await uploadBytes(fileRef, file);
+    await buildingHandler.refreshModels(building);
     events.trigger({ type: "UPDATE_BUILDING", payload: building });
   },
 
@@ -54,6 +65,8 @@ export const databaseHandler = {
     const storageInstance = getStorage(appInstance);
     const fileRef = ref(storageInstance, model.id);
     await deleteObject(fileRef);
+    await buildingHandler.deleteModels([model.id]);
+    await buildingHandler.refreshModels(building);
     events.trigger({ type: "UPDATE_BUILDING", payload: building });
   },
 };
