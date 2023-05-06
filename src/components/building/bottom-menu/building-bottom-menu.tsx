@@ -1,20 +1,27 @@
 import { FC } from "react";
-import { Card, IconButton } from "@mui/material";
+import { Card, Icon, IconButton } from "@mui/material";
 import "./building-bottom-menu.css";
 import { getBottomBarTools } from "./bottombar-tools";
 import { useAppContext } from "../../../middleware/context-provider";
 
+const tools = getBottomBarTools();
+
 export const BuildingBottomMenu: FC = () => {
-  const [state, dispatch] = useAppContext();
-  const tools = getBottomBarTools(state, dispatch);
+  const dispatch = useAppContext()[1];
 
   return (
     <Card className="bottom-menu">
-      {tools.map((tool) => (
-        <IconButton onClick={tool.action} key={tool.name}>
-          {tool.icon}
-        </IconButton>
-      ))}
+      {tools.map((tool) => {
+        return (
+          <IconButton
+            color={tool.active ? "primary" : "default"}
+            onClick={() => tool.action(dispatch)}
+            key={tool.name}
+          >
+            {tool.icon}
+          </IconButton>
+        );
+      })}
     </Card>
   );
 };

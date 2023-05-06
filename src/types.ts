@@ -30,5 +30,6 @@ export interface LngLat {
 export interface Tool {
   name: string;
   icon: any;
+  active: boolean;
   action: (...args: any) => void;
 }
