@@ -14,6 +14,8 @@ export const ActionList = [
   "UPLOAD_MODEL",
   "DELETE_MODEL",
   "EXPLODE_MODEL",
+  "TOGGLE_CLIPPER",
+  "TOGGLE_DIMENSIONS",
 ] as const;
 
 type ActionListType = typeof ActionList;
