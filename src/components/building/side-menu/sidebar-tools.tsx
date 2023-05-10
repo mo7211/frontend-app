@@ -1,10 +1,11 @@
 import MapIcon from "@mui/icons-material/Map";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ErrorIcon from "@mui/icons-material/GppMaybe";
-import FloorplanIcon from "@mui/icons-material/FindInPage";
 import ModelsIcon from "@mui/icons-material/HolidayVillage";
 import ListIcon from "@mui/icons-material/ViewList";
 import DeleteIcon from "@mui/icons-material/Delete";
+import FloorplanIcon from "@mui/icons-material/Layers";
+import PropertiesIcon from "@mui/icons-material/Info";
 import { Tool } from "../../../types";
 
 export function getSidebarTools(): Tool[] {
@@ -13,31 +14,39 @@ export function getSidebarTools(): Tool[] {
       name: "Info",
       active: false,
       icon: <ListIcon />,
-      action: ({ toggleMenu }) => {
-        toggleMenu(true, "BuildingInfo");
+      action: ({ onToggleMenu }) => {
+        onToggleMenu(true, "BuildingInfo");
       },
     },
     {
       name: "Models",
       active: false,
       icon: <ModelsIcon />,
-      action: ({ toggleMenu }) => {
-        toggleMenu(true, "ModelList");
+      action: ({ onToggleMenu }) => {
+        onToggleMenu(true, "ModelList");
       },
     },
     {
       name: "Floorplans",
       active: false,
       icon: <FloorplanIcon />,
-      action: ({ toggleMenu }) => {
-        console.log("Models!");
+      action: ({ onToggleMenu }) => {
+        onToggleMenu(true, "Floorplans");
+      },
+    },
+    {
+      name: "Properties",
+      active: false,
+      icon: <PropertiesIcon />,
+      action: ({ onToggleMenu }) => {
+        onToggleMenu(true, "Properties");
       },
     },
     {
       name: "Issues",
       active: false,
       icon: <ErrorIcon />,
-      action: ({ toggleMenu }) => {
+      action: ({ onToggleMenu }) => {
         console.log("Models!");
       },
     },

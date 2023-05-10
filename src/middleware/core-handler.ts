@@ -55,4 +55,7 @@ export const executeCore = async (action: Action, events: Events) => {
   if (action.type === "TOGGLE_DIMENSIONS") {
     return buildingHandler.toggleDimensions(action.payload);
   }
+  if (action.type === "TOGGLE_FLOORPLAN") {
+    return buildingHandler.toggleFloorplan(action.payload);
+  }
 };
