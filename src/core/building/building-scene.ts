@@ -1,4 +1,4 @@
-import { Building, Floorplan } from "./../../types";
+import { Building, Floorplan, Property } from "./../../types";
 import { BuildingDatabase } from "./building-database";
 import * as OBC from "openbim-components";
 import * as THREE from "three";
@@ -18,6 +18,7 @@ export class BuildingScene {
   private events: Events;
   private loadedModels = new Set<string>();
   private whiteMaterial = new THREE.MeshBasicMaterial({ color: "white" });
+  private properties: { [fragID: string]: any } = {};
 
   get container() {
     const domElement = this.components.renderer.get().domElement;
@@ -92,6 +93,7 @@ export class BuildingScene {
   }
 
   dispose() {
+    this.properties = {};
     this.toggleEvents(false);
     this.loadedModels.clear();
     this.components.dispose();
@@ -211,7 +213,26 @@ export class BuildingScene {
   }
 
   private select = () => {
-    this.fragments.highlighter.highlight("selection");
+    const result = this.fragments.highlighter.highlight("selection");
+    if (result) {
+      const allProps = this.properties[result.fragment.id];
+      const props = allProps[result.id];
+      if (props) {
+        const formatted: Property[] = [];
+        for (const name in props) {
+          let value = props[name];
+          if (!value) value = "Unknown";
+          if (value.value) value = value.value;
+          if (typeof value === "number") value = value.toString();
+          formatted.push({ name, value });
+        }
+        return this.events.trigger({
+          type: "UPDATE_PROPERTIES",
+          payload: formatted,
+        });
+      }
+    }
+    this.events.trigger({ type: "UPDATE_PROPERTIES", payload: [] });
   };
 
   private getFloorNav() {
@@ -238,6 +259,7 @@ export class BuildingScene {
 
       const fileNames = Object.keys(entries);
 
+      const properties = await entries["properties.json"].json();
       const allTypes = await entries["all-types.json"].json();
       const modelTypes = await entries["model-types.json"].json();
       const levelsProperties = await entries["levels-properties.json"].json();
@@ -290,6 +312,8 @@ export class BuildingScene {
         const dataURL = URL.createObjectURL(dataBlob);
 
         const fragment = await this.fragments.load(geometryURL, dataURL);
+
+        this.properties[fragment.id] = properties;
         // Set up edges
 
         const lines = this.fragments.edges.generate(fragment);
