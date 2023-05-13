@@ -33,3 +33,8 @@ export interface Tool {
   active: boolean;
   action: (...args: any) => void;
 }
+
+export interface Floorplan {
+  name: string;
+  id: string;
+}
